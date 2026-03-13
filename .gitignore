@@ -18,9 +18,17 @@ out
 .eslintcache
 .env
 .env.local
+.env.production
 .env.development.local
 .env.test.local
 .env.production.local
+.env.*.backup
+
+# local credentials and token dumps
+api/local.settings.json
+api/local.settings.*.json
+test-credentials.json
+tmp-*.json
 
 npm-debug.log*
 yarn-debug.log*

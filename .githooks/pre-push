@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+
+set -eu
+
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+remote_name=${1:-origin}
+zero_sha=0000000000000000000000000000000000000000
+stdin_file=$(mktemp)
+commit_file=$(mktemp)
+
+cleanup() {
+    rm -f "$stdin_file" "$commit_file"
+}
+
+trap cleanup EXIT INT TERM
+
+cat > "$stdin_file"
+
+while IFS=' ' read -r local_ref local_sha remote_ref remote_sha; do
+    if [ -z "${local_ref:-}" ] || [ "${local_sha:-$zero_sha}" = "$zero_sha" ]; then
+        continue
+    fi
+
+    if [ "${remote_sha:-$zero_sha}" = "$zero_sha" ]; then
+        git rev-list "$local_sha" --not --remotes="$remote_name" >> "$commit_file"
+    else
+        git rev-list "${remote_sha}..${local_sha}" >> "$commit_file"
+    fi
+done < "$stdin_file"
+
+if ! command -v node >/dev/null 2>&1; then
+    echo "Secret guard requires Node.js to run." >&2
+    exit 1
+fi
+
+sort -u "$commit_file" | sed '/^$/d' | node "$repo_root/scripts/secret-guard.js" --commits-from-stdin
+
+if command -v bd >/dev/null 2>&1; then
+    cat "$stdin_file" | exec bd hooks run pre-push "$@"
+fi
+
+exit 0

@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+set -eu
+
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+
+if ! command -v node >/dev/null 2>&1; then
+    echo "Secret guard requires Node.js to run." >&2
+    exit 1
+fi
+
+node "$repo_root/scripts/secret-guard.js" --staged
+
+if command -v bd >/dev/null 2>&1; then
+    exec bd hooks run pre-commit "$@"
+fi
+
+exit 0
