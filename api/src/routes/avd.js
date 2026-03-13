@@ -259,7 +259,7 @@ function normalizeWorkflowConfig(config = {}) {
     baseImageOffer: config.baseImageOffer ?? config.BaseImageOffer ?? 'Windows-11',
     baseImageSku: config.baseImageSku ?? config.BaseImageSku ?? 'win11-23h2-avd',
     baseImageVersion: config.baseImageVersion ?? config.BaseImageVersion ?? 'latest',
-    galleryName: config.galleryName ?? config.GalleryName ?? '',
+    galleryName: config.galleryName ?? config.GalleryName ?? 'sig-avd-gold',
     galleryImageDefinitionName: config.galleryImageDefinitionName ?? config.GalleryImageDefinitionName ?? 'avd-gold-base',
     galleryImageVersion: config.galleryImageVersion ?? config.GalleryImageVersion ?? '1.0.0',
     hostPoolName: config.hostPoolName ?? config.HostPoolName ?? 'avd-cui-hp',

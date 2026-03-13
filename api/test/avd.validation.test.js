@@ -63,3 +63,25 @@ test('CreateHostPool does not require imageResourceGroup', () => {
 
   assert.equal(missing.includes('imageResourceGroup'), false);
 });
+
+test('normalizeWorkflowConfig applies the PowerShell gallery default', () => {
+  const config = normalizeWorkflowConfig({});
+
+  assert.equal(config.galleryName, 'sig-avd-gold');
+});
+
+test('SysprepAndCapture uses the default gallery name when one is not provided', () => {
+  const config = normalizeWorkflowConfig({
+    subscriptionId: 'sub-123',
+    location: 'usgovvirginia',
+    imageResourceGroup: 'rg-images',
+    baseVmName: 'avd-gold-base-01',
+  });
+
+  const missing = validateWorkflowRequirements(
+    config,
+    resolveWorkflowStages(['SysprepAndCapture'])
+  );
+
+  assert.equal(missing.includes('galleryName'), false);
+});
