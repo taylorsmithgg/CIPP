@@ -41,3 +41,16 @@ app.log
 # AI rules
 .*/rules
 AGENTS.md
+
+# beads local runtime files
+.beads/.local_version
+.beads/.sync.lock
+.beads/beads.db
+.beads/beads.db-shm
+.beads/beads.db-wal
+.beads/beads.left.jsonl
+.beads/beads.left.meta.json
+.beads/daemon.lock
+.beads/daemon.log
+.beads/daemon.pid
+.beads/last-touched
